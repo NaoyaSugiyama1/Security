@@ -179,13 +179,14 @@ public class KinectAvatar : MonoBehaviour
         Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
 
         //関節の座標
-        double naiseki= Vector3.Dot(LeftArm.transform.position, LeftForeArm.transform.position);
-        double kakudo = Math.Acos(naiseki);
+        var left_hand = body.Joints[JointType.HandRight];
+        var left_elbow = body.Joints[JointType.ElbowRight];
+        var left_shoulder = body.Joints[JointType.ShoulderRight];
+        double vectorA = left_hand.Position.ToVector3() - left_elbow.Position.ToVector3();
+        double vectorB = left_shoulder.Position.ToVector3() - left_elbow.Position.ToVector3();
+        double naiseki= Vector3.Dot(vectorA.normalized, vectorB.normalized);
+        double kakudo = Math.Acos(naiseki / (vectorA.Length() * vectorB.Length()));
         Debug.Log(kakudo);
-       // if (naiseki > 2.0)
-        //{
-         //   Debug.Log(naiseki);
-        //}
     }
 }
  
