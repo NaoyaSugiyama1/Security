@@ -34,10 +34,13 @@ public class KinectAvatar : MonoBehaviour
     public GameObject Neck;
     public GameObject Head;
 
+    private Vector3 OffsetToWorld;
+
 
     // Use this for initialization
     void Start()
     {
+        OffsetToWorled = Vector3.zero;
         Ref = _UnityChan.transform.Find("Character1_Reference").gameObject;
 
         Hips = Ref.gameObject.transform.Find("Character1_Hips").gameObject;
@@ -146,7 +149,7 @@ public class KinectAvatar : MonoBehaviour
             AnkleRight = joints[JointType.AnkleRight].Orientation.ToQuaternion(comp);
         }
 
-       
+
 
         // 関節の回転を計算する
         var q = Ref.transform.rotation;
@@ -186,6 +189,23 @@ public class KinectAvatar : MonoBehaviour
         //{
          //   Debug.Log(naiseki);
         //}
+        Vector3 posWrist = GetVector3FromJoint( body.Joints[JointType.WristLeft], false);
+        Vector3 posElbow = GetVector3FromJoint( body.Joints[JointType.ElbowLeft], false);
+        Vector3 posShoulder = GetVector3FromJoint( body.Joints[JointType.ShoulderLeft], false);
+        Vector3 vew = (posWrist - posElbow).normalized();
+        Vector3 ves = (posShoulder - posElbow).normalized();
+        kakudo = Math.Acos( Vector3.Dot(vew, ves));
+        Debug.Log(kakudo);
     }
+
+    private Vector3 GetVector3FromJoint(Kinect.Joint joint, bool applyOffet = true)
+    {
+        Vector3 localPosition = new Vector3(joint.Position.X, joint.Position.Y, -joint.Position.Z);
+        GameLoop gl = gameLoop.GetComponent<GameLoop>();
+        Vector3 globalPosition = gameObject.transform.TransformPoint(localPosition);
+        if (applyOffet)
+            globalPosition += OffsetToWorld;
+        return globalPosition;
+    }
+
 }
- 
