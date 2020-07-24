@@ -6,6 +6,8 @@ using System.Linq;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 using System;
+//using System.Numerics;
+//using Microsoft.Kinect;
 
 public class KinectAvatar : MonoBehaviour
 {
@@ -179,14 +181,16 @@ public class KinectAvatar : MonoBehaviour
         Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
 
         //関節の座標
-        //var left_hand = body.joints[jointtype.handright];
-        //var left_elbow = body.joints[jointtype.elbowright];
-        //var left_shoulder = body.joints[jointtype.shoulderright];
-        //double vectora = left_hand.position.tovector3() - left_elbow.position.tovector3();
-        //double vectorb = left_shoulder.position.tovector3() - left_elbow.position.tovector3();
-        //double naiseki= vector3.dot(vectora.normalized, vectorb.normalized);
-        //double kakudo = math.acos(naiseki / (vectora.length() * vectorb.length()));
-        //debug.log(kakudo);
+        //var left_hand = body.Joints[JointType.HandRight];
+        //var left_elbow = body.Joints[JointType.ElbowRight];
+        //var left_shoulder = body.Joints[JointType.ShoulderRight];
+
+        //var vectora = left_hand.Position.ToVector3() - left_elbow.Position.ToVector3();
+        //var vectorb = left_shoulder.Position.ToVector3() - left_elbow.Position.ToVector3();
+
+        //var naiseki= Vector3.Dot(vectora.normalized, vectorb.normalized);
+        //var kakudo = Math.Acos(naiseki / (vectora.Length() * vectorb.Length()));
+        //Debug.Log(kakudo);
     }
 }
  
