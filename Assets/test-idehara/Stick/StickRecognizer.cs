@@ -8,11 +8,12 @@ using UnityEngine;
 // を参照して、適切に記述
 
 // なにを返すべきかは、要打ち合わせ
+// →　棒の画面上の２点
+// →　呼び出し側で、その座標情報と、骨格情報からジェスチャ認識
 
 public class StickRecognizer : MonoBehaviour
 {
-    public enum StickState { STILL, HMOVE, VMOVE, WAVE };
-    public Vector3 stickPosition;
+    public Vector2 s1, s2;
 
     // この型は OpenCV 用の型にすること！
     private Texture2D formerFrame;
@@ -21,7 +22,8 @@ public class StickRecognizer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stickPosition = Vector3.zero;
+        s1 = Vector2.zero;
+        s2 = Vector2.zero;
     }
 
     // Update is called once per frame
@@ -30,11 +32,13 @@ public class StickRecognizer : MonoBehaviour
 
     }
 
-    public StickRecognizer.StickState GetStickAction( Texture2D frame )
+    // 棒が認識されていれば true, 認識されていなければ false を返す
+    // 認識した両端は　Vector2 型のメンバ s1, s2 に入れる。
+    public bool GetStickPosition( Texture2D frame )
     {
         formerFrame = currentFrame;
         currentFrame = frame;
 
-        return StickState.STILL;
+        return true;
     }
 }
