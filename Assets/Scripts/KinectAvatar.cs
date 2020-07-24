@@ -36,10 +36,13 @@ public class KinectAvatar : MonoBehaviour
     public GameObject Neck;
     public GameObject Head;
 
+    private Vector3 OffsetToWorld;
+
 
     // Use this for initialization
     void Start()
     {
+        OffsetToWorld = Vector3.zero;
         Ref = _UnityChan.transform.Find("Character1_Reference").gameObject;
 
         Hips = Ref.gameObject.transform.Find("Character1_Hips").gameObject;
@@ -148,7 +151,7 @@ public class KinectAvatar : MonoBehaviour
             AnkleRight = joints[JointType.AnkleRight].Orientation.ToQuaternion(comp);
         }
 
-       
+
 
         // 関節の回転を計算する
         var q = Ref.transform.rotation;
@@ -181,16 +184,29 @@ public class KinectAvatar : MonoBehaviour
         Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
 
         //関節の座標
-        //var left_hand = body.Joints[JointType.HandRight];
-        //var left_elbow = body.Joints[JointType.ElbowRight];
-        //var left_shoulder = body.Joints[JointType.ShoulderRight];
-
-        //var vectora = left_hand.Position.ToVector3() - left_elbow.Position.ToVector3();
-        //var vectorb = left_shoulder.Position.ToVector3() - left_elbow.Position.ToVector3();
-
-        //var naiseki= Vector3.Dot(vectora.normalized, vectorb.normalized);
-        //var kakudo = Math.Acos(naiseki / (vectora.Length() * vectorb.Length()));
-        //Debug.Log(kakudo);
+        double naiseki= Vector3.Dot(LeftArm.transform.position, LeftForeArm.transform.position);
+        double kakudo = Math.Acos(naiseki);
+        Debug.Log(kakudo);
+       // if (naiseki > 2.0)
+        //{
+         //   Debug.Log(naiseki);
+        //}
+        Vector3 posWrist = GetVector3FromJoint( body.Joints[JointType.WristLeft], false);
+        Vector3 posElbow = GetVector3FromJoint( body.Joints[JointType.ElbowLeft], false);
+        Vector3 posShoulder = GetVector3FromJoint( body.Joints[JointType.ShoulderLeft], false);
+        Vector3 vew = (posWrist - posElbow).normalized;
+        Vector3 ves = (posShoulder - posElbow).normalized;
+        kakudo = Math.Acos( Vector3.Dot(vew, ves));
+        Debug.Log(kakudo);
     }
+
+    private Vector3 GetVector3FromJoint(Windows.Kinect.Joint joint, bool applyOffet = true)
+    {
+        Vector3 localPosition = new Vector3(joint.Position.X, joint.Position.Y, -joint.Position.Z);
+        Vector3 globalPosition = gameObject.transform.TransformPoint(localPosition);
+        if (applyOffet)
+            globalPosition += OffsetToWorld;
+        return globalPosition;
+    }
+
 }
- 
