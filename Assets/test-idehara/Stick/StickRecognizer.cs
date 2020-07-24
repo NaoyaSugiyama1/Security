@@ -39,6 +39,9 @@ public class StickRecognizer : MonoBehaviour
         formerFrame = currentFrame;
         currentFrame = frame;
 
+        s1 = Vector2.zero;
+        s2 = Vector2.up;
+
         return true;
     }
 }
