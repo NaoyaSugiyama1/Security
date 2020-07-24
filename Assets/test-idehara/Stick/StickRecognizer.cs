@@ -7,7 +7,7 @@ using UnityEngine;
 // Assets/KinectView/Scripts/ColorSourceManager.cs
 // を参照して、適切に記述
 
-// なにを返すべきかは、要打ち合わせ
+// なにを返すべきか
 // →　棒の画面上の２点
 // →　呼び出し側で、その座標情報と、骨格情報からジェスチャ認識
 
