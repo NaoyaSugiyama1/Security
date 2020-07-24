@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+    public enum CarState {NORMAL, CRASHED};
     // 運転手いらいら度
     public float frustration;
     public float speed;
     public float accel;
+
+    // 人にぶつかったら CRASHED に移行
+    public CarState state;
 
     public GameObject target;   // 目的地（空ゲームオブジェクト推奨）
 
@@ -16,6 +20,7 @@ public class CarController : MonoBehaviour
     {
         frustration = 0;
         accel = 0;
+        state = CarState.NORMAL;
     }
 
     // Update is called once per frame

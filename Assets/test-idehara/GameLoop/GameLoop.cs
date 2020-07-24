@@ -9,6 +9,8 @@ public class GameLoop : MonoBehaviour
     public GameState state;
     public int myscore;
 
+    public GestureManager gm;
+
     // 最後にエスケープキーが押された時刻
     private DateTime lastEscape;
 
@@ -38,6 +40,28 @@ public class GameLoop : MonoBehaviour
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
             NextState();
 
+        switch( state )
+        {
+            case GameState.Main:
+                var cars = GameObject.FindGameObjectsWithTag("car");
+                // GestureManager に問い合わせ
+                // Gesture が認識されていて、一定時間が経過していれば：
+                //   Car 全員に指示をとばす
+                if( gm.currentGesture != GestureManager.GestureType.NULL )
+                {
+                    foreach (var c in cars) {
+                        c.GetComponent<CarController>().Order( gm.currentGesture );
+                    }
+                }
+
+                foreach (var c in cars) {
+                    if( c.GetComponent<CarController>().state == CarController.CarState.CRASHED )
+                    {
+                        // END に移行
+                    }
+                }
+                break;
+        }
     }
 
     private void NextState()
