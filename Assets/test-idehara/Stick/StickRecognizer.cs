@@ -33,7 +33,8 @@ public class StickRecognizer : MonoBehaviour
     }
 
     // 棒が認識されていれば true, 認識されていなければ false を返す
-    // 認識した両端は　Vector2 型のメンバ s1, s2 に入れる。
+    // 認識した両端は Vector2 型のメンバ s1, s2 に入れる。
+    // s1, s2 の座標系は、左上を (0,0) とするスクリーン座標
     public bool GetStickPosition( Texture2D frame )
     {
         formerFrame = currentFrame;
