@@ -6,6 +6,8 @@ using System.Linq;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 using System;
+//using System.Numerics;
+//using Microsoft.Kinect;
 
 public class KinectAvatar : MonoBehaviour
 {
@@ -182,6 +184,7 @@ public class KinectAvatar : MonoBehaviour
         Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
 
         //関節の座標
+
         double naiseki= Vector3.Dot(LeftArm.transform.position, LeftForeArm.transform.position);
         double kakudo = Math.Acos(naiseki);
         Debug.Log(kakudo);
