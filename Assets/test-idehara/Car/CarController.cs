@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    public enum CarState {NORMAL, CRASHED};
+    public enum CarState {NORMAL, CRASHED, ARRIVED};
     // 運転手いらいら度
     public float frustration;
     public float speed;
@@ -28,6 +28,12 @@ public class CarController : MonoBehaviour
     {
         Vector3 dir = target.transform.position - transform.position;
         transform.position += dir.normalized * speed * Time.deltaTime;
+        if( state == CarState.ARRIVED )
+        {
+            // 目的地に到着したら、表示から消す
+            // gameObject 自体を消滅させると、state が参照できなくなる
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     // 運転手が受け入れたら true
