@@ -57,9 +57,24 @@ public class GameLoop : MonoBehaviour
                 foreach (var c in cars) {
                     if( c.GetComponent<CarController>().state == CarController.CarState.CRASHED )
                     {
-                        // END に移行
+                        // どれか１台でも衝突したら BADEND に移行
                     }
                 }
+
+                bool allArrived = true;
+                foreach (var c in cars) {
+                    if( c.GetComponent<CarController>().state != CarController.CarState.ARRIVED )
+                    {
+                        allArrived = false;
+                        break;
+                        // どれか１台でも到着していなかったら、allArrived は false
+                    }
+                }
+                if( allArrived )
+                {
+                    // 全車到着で GOODEND に移行
+                }
+
                 break;
         }
     }

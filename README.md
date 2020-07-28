@@ -4,6 +4,12 @@ IVRC2020
 # Unity のバージョン
 2019.3.14 で統一！　→ ~~4.4 長期サポート版にできればしたい。~~（動かないらしい）
 
+# 使用済みキー
+- space : GameLoop の状態を次に遷移
+- W : 押している間、GestureManager で、「進め」の認識状態にする
+- S : 押している間、GestureManager で、「徐行」の認識状態にする
+- X : 押している間、GestureManager で、「止まれ」の認識状態にする
+
 # ToDo
 
 ## CarContorller
