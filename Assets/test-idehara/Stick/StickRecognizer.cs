@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using OpenCvSharp;
 
 
 // Assets/KinectView/Scripts/ColorSourceView.cs
@@ -44,5 +45,27 @@ public class StickRecognizer : MonoBehaviour
         s2 = Vector2.up;
 
         return true;
+
+        /*
+        //横 press J
+        if (Input.GetKey(KeyCode.J))
+        {
+            s1 = (50,100), s2 = (150, 100)
+        }
+        //斜め press K
+        else if (Input.GetKey(KeyCode.K))
+        {
+            s1 = (70,70), s2 = (140, 140)
+        }
+        //縦 press L
+        else if (Input.GetKey(KeyCode.L))
+        {
+            s1 = (100,50), s2 = (100, 150)
+        }
+        else
+        {
+            return false;
+        }
+        */
     }
 }
