@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,6 +26,25 @@ public class GestureManager : MonoBehaviour
         // ジェスチャを認識したら、currentGesture と duration を更新する
         // 認識できなければ、currentGesture は NULL に。
         // 新しいジェスチャが来たら、duration を 0 でリセット
+
+        // デバッグ用
+        if( Input.GetKey( KeyCode.W) ) {
+            if( currentGesture != GestureType.GO ) duration = 0;
+            currentGesture = GestureType.GO;
+        }
+        else if( Input.GetKey( KeyCode.S) ) {
+            if( currentGesture != GestureType.SLOW ) duration = 0;
+            currentGesture = GestureType.SLOW;
+        }
+        else if( Input.GetKey( KeyCode.X) ) {
+            if( currentGesture != GestureType.STOP ) duration = 0;
+            currentGesture = GestureType.STOP;
+        }
+        else {
+            currentGesture = GestureType.NULL;
+        }
+
+
         duration += Time.deltaTime;
     }
 }
