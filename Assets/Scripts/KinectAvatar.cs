@@ -184,10 +184,7 @@ public class KinectAvatar : MonoBehaviour
         Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
 
         //関節の座標
-<<<<<<< HEAD
-=======
 
->>>>>>> 4fd6e052aec775f647737a5a6ff79e155952bc45
         double naiseki= Vector3.Dot(LeftArm.transform.position, LeftForeArm.transform.position);
         double kakudo = Math.Acos(naiseki);
         Debug.Log(kakudo);
