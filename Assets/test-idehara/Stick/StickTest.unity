@@ -320,7 +320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b31c27a20bd806f1395d6a6dd10202ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stickPosition: {x: 0, y: 0, z: 0}
+  s1: {x: 0, y: 0}
+  s2: {x: 0, y: 0}
 --- !u!114 &1643308319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,6 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc296701db88886ca9195949751d4e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sr: {fileID: 1643308318}
 --- !u!1 &1902491710
 GameObject:
   m_ObjectHideFlags: 0
