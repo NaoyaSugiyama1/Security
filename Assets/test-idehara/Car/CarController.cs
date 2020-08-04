@@ -10,10 +10,16 @@ public class CarController : MonoBehaviour
     public float speed;
     public float accel;
 
+    // 車の長さ
+    public float carLength;
+
     // 人にぶつかったら CRASHED に移行
     public CarState state;
+    // 目的地（空ゲームオブジェクト推奨）
+    public GameObject target;
 
-    public GameObject target;   // 目的地（空ゲームオブジェクト推奨）
+    private float wheelAngle;
+    private Plane targetPlane;
 
     // Start is called before the first frame update
     void Start()
@@ -21,13 +27,17 @@ public class CarController : MonoBehaviour
         frustration = 0;
         accel = 0;
         state = CarState.NORMAL;
+        wheelAngle = -10.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        targetPlane = new Plane( transform.forward,  target.transform.position );
+
         Vector3 dir = target.transform.position - transform.position;
-        transform.position += dir.normalized * speed * Time.deltaTime;
+        transform.position += transform.forward * speed * Time.deltaTime;
+        transform.Rotate( 0, wheelAngle * speed * Time.deltaTime, 0, Space.Self);
         if( state == CarState.ARRIVED )
         {
             // 目的地に到着したら、表示から消す
