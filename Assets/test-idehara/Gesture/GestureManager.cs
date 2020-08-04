@@ -23,7 +23,37 @@ public class GestureManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    { 
+        // StickRecognizer である sr に、棒の位置や動きを問い合わせ、
+        // 関節情報などを加味して、ジェスチャを認識する。
+        // ジェスチャを認識したら、currentGesture と duration を更新する
+        // 認識できなければ、currentGesture は NULL に。
+        // 新しいジェスチャが来たら、duration を 0 でリセット
+
+        // デバッグ用
+        if ( Input.GetKey( KeyCode.W) ) {
+            if( currentGesture != GestureType.GO ) duration = 0;
+            currentGesture = GestureType.GO;
+        }
+        else if( Input.GetKey( KeyCode.S) ) {
+            if( currentGesture != GestureType.SLOW ) duration = 0;
+            currentGesture = GestureType.SLOW;
+        }
+        else if( Input.GetKey( KeyCode.X) ) {
+            if( currentGesture != GestureType.STOP ) duration = 0;
+            currentGesture = GestureType.STOP;
+        }
+        else {
+            currentGesture = GestureType.NULL;
+        }
+
+
+        duration += Time.deltaTime;
+
+
+
+
+        //Kinectの処理
         if (_BodyManager == null)
         {
             Debug.Log("_BodyManager == null");
@@ -50,33 +80,22 @@ public class GestureManager : MonoBehaviour
         var Lhand = body.Joints[JointType.HandLeft];
         var Lelbow = body.Joints[JointType.ElbowLeft];
         var Lshoulder = body.Joints[JointType.ShoulderLeft];
-        Debug.Log(Rhand);
+        Debug.Log(Rhand.ToVector3());
 
-
-        // StickRecognizer である sr に、棒の位置や動きを問い合わせ、
-        // 関節情報などを加味して、ジェスチャを認識する。
-        // ジェスチャを認識したら、currentGesture と duration を更新する
-        // 認識できなければ、currentGesture は NULL に。
-        // 新しいジェスチャが来たら、duration を 0 でリセット
-
-        // デバッグ用
-        if ( Input.GetKey( KeyCode.W) ) {
-            if( currentGesture != GestureType.GO ) duration = 0;
-            currentGesture = GestureType.GO;
-        }
-        else if( Input.GetKey( KeyCode.S) ) {
-            if( currentGesture != GestureType.SLOW ) duration = 0;
-            currentGesture = GestureType.SLOW;
-        }
-        else if( Input.GetKey( KeyCode.X) ) {
-            if( currentGesture != GestureType.STOP ) duration = 0;
+        if(Rhand.ToVector3().y > 0.3)
+        {
             currentGesture = GestureType.STOP;
         }
-        else {
-            currentGesture = GestureType.NULL;
+        else
+        {
+            currentGesture = GestureType.GO;
         }
-
-
-        duration += Time.deltaTime;
+       
     }
+}
+
+public static class JointExtensions
+{
+    public static Vector3 ToVector3(this Windows.Kinect.Joint joint)
+        => new Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
 }
