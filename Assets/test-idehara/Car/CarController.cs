@@ -19,6 +19,7 @@ public class CarController : MonoBehaviour
     public GameObject target;
 
     private float wheelAngle;
+    private float addAngleFactor = 1.8f;
     private Plane targetPlane;
 
     // Start is called before the first frame update
@@ -27,7 +28,7 @@ public class CarController : MonoBehaviour
         frustration = 0;
         accel = 0;
         state = CarState.NORMAL;
-        wheelAngle = -10.0f;
+        wheelAngle = -45.0f;
     }
 
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class CarController : MonoBehaviour
 
         Vector3 dir = target.transform.position - transform.position;
         transform.position += transform.forward * speed * Time.deltaTime;
-        transform.Rotate( 0, wheelAngle * speed * Time.deltaTime, 0, Space.Self);
+        transform.Rotate( 0, Mathf.Tan(wheelAngle*addAngleFactor*3.14f/180.0f) * carLength * speed * Time.deltaTime * carLength, 0, Space.Self);
         if( state == CarState.ARRIVED )
         {
             // 目的地に到着したら、表示から消す
