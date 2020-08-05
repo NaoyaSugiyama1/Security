@@ -19,7 +19,7 @@ public class CarController : MonoBehaviour
     public GameObject target;
 
     private float wheelAngle;
-    private float addAngleFactor = 1.8f;
+    private float addAngleFactor = 12.0f;
     private Plane targetPlane;
 
     // Start is called before the first frame update
@@ -37,19 +37,18 @@ public class CarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 dir = target.transform.position - transform.position;
-        transform.position += transform.forward * speed * Time.deltaTime;
-        transform.Rotate( 0, Mathf.Tan(wheelAngle*addAngleFactor*3.14f/180.0f) * carLength * speed * Time.deltaTime * carLength, 0, Space.Self);
+        transform.position += transform.forward * speed * Time.deltaTime /2;
+        transform.Rotate( 0, Mathf.Tan(wheelAngle*3.14f/180.0f) * addAngleFactor * carLength * speed * Time.deltaTime, 0, Space.Self);
+        transform.position += transform.forward * speed * Time.deltaTime /2;
 
-        if( wheelAngle == 0 && Mathf.Abs(targetPlane.GetDistanceToPoint( transform.position)) < carLength * 1.5)
+        if( wheelAngle == 0 && Mathf.Abs(targetPlane.GetDistanceToPoint( transform.position)) < carLength * 1.3f)
             wheelAngle = -45.0f;
 
-        Debug.Log( Vector3.Angle(targetPlane.normal, transform.forward) );
-
-        if( Vector3.Angle(targetPlane.normal, transform.forward) > 85 )
-        {
-            wheelAngle *= 0.7f;
-        }
+        Vector3 dir = target.transform.position - transform.position;
+        float leftAngle = Vector3.Angle(dir, transform.forward);
+        Debug.Log(leftAngle);
+        if( Mathf.Abs(leftAngle) < 3 )
+            wheelAngle *= 0.55f;
 
         if( state == CarState.ARRIVED )
         {
