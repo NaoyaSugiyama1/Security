@@ -28,17 +28,29 @@ public class CarController : MonoBehaviour
         frustration = 0;
         accel = 0;
         state = CarState.NORMAL;
-        wheelAngle = -45.0f;
+        wheelAngle = 0;
+        // ターゲット設定コードを一回呼んで、インスペクタで指定されたターゲットも
+        // ちゃんと計算
+        SetTarget(target);
     }
 
     // Update is called once per frame
     void Update()
     {
-        targetPlane = new Plane( transform.forward,  target.transform.position );
-
         Vector3 dir = target.transform.position - transform.position;
         transform.position += transform.forward * speed * Time.deltaTime;
         transform.Rotate( 0, Mathf.Tan(wheelAngle*addAngleFactor*3.14f/180.0f) * carLength * speed * Time.deltaTime * carLength, 0, Space.Self);
+
+        if( wheelAngle == 0 && Mathf.Abs(targetPlane.GetDistanceToPoint( transform.position)) < carLength * 1.5)
+            wheelAngle = -45.0f;
+
+        Debug.Log( Vector3.Angle(targetPlane.normal, transform.forward) );
+
+        if( Vector3.Angle(targetPlane.normal, transform.forward) > 85 )
+        {
+            wheelAngle *= 0.7f;
+        }
+
         if( state == CarState.ARRIVED )
         {
             // 目的地に到着したら、表示から消す
@@ -68,5 +80,6 @@ public class CarController : MonoBehaviour
     public void SetTarget(GameObject t)
     {
         target = t;
+        targetPlane = new Plane( transform.forward,  target.transform.position );
     }
 }

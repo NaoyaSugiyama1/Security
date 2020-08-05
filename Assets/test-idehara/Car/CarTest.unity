@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frustration: 0
-  speed: 10
+  speed: 5
   accel: 0
   carLength: 2
   state: 0
