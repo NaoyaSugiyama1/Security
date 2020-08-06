@@ -40,8 +40,7 @@ public class CarController : MonoBehaviour
         SetTarget(target);
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float rotationAngle = Mathf.Tan(wheelAngle*3.14f/180.0f) * addAngleFactor * carLength * speed * Time.deltaTime;
         Vector3 dir = target.transform.position - transform.position;
@@ -75,7 +74,11 @@ public class CarController : MonoBehaviour
         // 目的地が４０度以下に見えているなら、ずれている角度に応じてハンドルを切り戻す
         else if( Mathf.Abs(leftAngle) < 40 )
             wheelAngle += cr.y * 0.8f;
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
         if( state == CarState.ARRIVED )
         {
             // 目的地に到着したら、表示から消す
