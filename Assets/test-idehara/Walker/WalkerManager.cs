@@ -40,6 +40,7 @@ public class WalkerManager : MonoBehaviour
         {
             Debug.Log("collision!!");
             //gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            speed = 0;
         }
     }
 }
