@@ -17,7 +17,7 @@ public class GameLoop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = GameState.Opening;
+        state = GameState.Main;
     }
 
     // Update is called once per frame

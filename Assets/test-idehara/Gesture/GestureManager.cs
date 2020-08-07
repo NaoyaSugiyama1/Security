@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Windows.Kinect;
 using System.Linq;
+using System.Collections.Specialized;
+using System;
+//using System.Diagnostics;
 
 public class GestureManager : MonoBehaviour
 {
@@ -13,12 +16,16 @@ public class GestureManager : MonoBehaviour
     public GestureType currentGesture;
     public float duration;
     public StickRecognizer sr;
+    Queue<Vector3> Rhand_Q;
+    Queue<Vector3> Lhand_Q;
 
     // Start is called before the first frame update
     void Start()
     {
         currentGesture = GestureType.NULL;
         duration = 0;
+        Rhand_Q = new Queue<Vector3>();
+        Lhand_Q = new Queue<Vector3>();
     }
 
     // Update is called once per frame
@@ -49,10 +56,10 @@ public class GestureManager : MonoBehaviour
 
 
         duration += Time.deltaTime;
+    }
 
-
-
-
+    void FixedUpdate ()
+    {
         //Kinectの処理
         if (_BodyManager == null)
         {
@@ -80,17 +87,60 @@ public class GestureManager : MonoBehaviour
         var Lhand = body.Joints[JointType.HandLeft];
         var Lelbow = body.Joints[JointType.ElbowLeft];
         var Lshoulder = body.Joints[JointType.ShoulderLeft];
-        Debug.Log(Rhand.ToVector3());
+        //Debug.Log(Rhand.ToVector3());
 
-        if(Rhand.ToVector3().y > 0.3)
+        // 停止のキュー
+        Rhand_Q.Enqueue(Rhand.ToVector3());
+        if (Rhand_Q.Count > 60)
+        {
+            Rhand_Q.Dequeue();
+        }
+        float max = -999;
+        float min = 999;
+        foreach (Vector3 v in Rhand_Q)
+        {
+            if (max < v.x)
+            {
+                max = v.x;
+            }
+            if (min > v.x)
+            {
+                min = v.x;
+            }
+        }
+
+        // 進行のキュー
+        Lhand_Q.Enqueue(Lhand.ToVector3());
+        if (Lhand_Q.Count > 60)
+        {
+            Lhand_Q.Dequeue();
+        }
+        float max2 = -999;
+        float min2 = 999;
+        foreach (Vector3 v2 in Lhand_Q)
+        {
+            var v3 = Math.Abs(v2.x);
+            if (max2 < v3)
+            {
+                max2 = v3;
+            }
+            if (min2 > v3)
+            {
+                min2 = v3;
+            }
+        }
+
+        //if(Rhand.ToVector3().y > 0.3)
+        if (max - min > 0.2)
         {
             currentGesture = GestureType.STOP;
         }
-        else
+        //else
+        Debug.Log(max2 + " " + min2);
+        if (max2 - min2 > 0.3)
         {
             currentGesture = GestureType.GO;
         }
-       
     }
 }
 
