@@ -82,11 +82,16 @@ public class CarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if( state == CarState.ARRIVED )
+        switch( state )
         {
-            // 目的地に到着したら、表示から消す
-            // gameObject 自体を消滅させると、state が参照できなくなる
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            case CarState.ARRIVED:
+                // 目的地に到着したら、表示から消す
+                // gameObject 自体を消滅させると、state が参照できなくなる
+                gameObject.GetComponent<MeshRenderer>().enabled = false;
+                break;
+            case CarState.CRASHED:
+                speed *= 0.9f;
+                break;
         }
     }
 
@@ -118,5 +123,13 @@ public class CarController : MonoBehaviour
     public void WaitAtGate(float t)
     {
         state = CarState.WAITING;
+    }
+
+    public void OnCollisionEnter(Collision c)
+    {
+        if( c.gameObject.CompareTag("walker") )
+        {
+            state = CarState.CRASHED;
+        }
     }
 }
