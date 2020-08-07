@@ -11,10 +11,14 @@ public class CarController : MonoBehaviour
     public enum CarState {NORMAL, CRASHED, ARRIVED, WAITING};
     // 運転手いらいら度
     public float frustration;
+    // 運転手反応速度 [s] （車間距離トリガに対する反応速度＝運転手の下手さ度合い）
+    public float responseTime;
+    // 現在速度 [m/s]
     public float speed;
-    public float accel;
+    // 目標速度 [m/s]
+    public float targetSpeed;
 
-    // 車の長さ
+    // 車の長さ [m]
     public float carLength;
 
     // 人にぶつかったら CRASHED に移行
@@ -32,11 +36,10 @@ public class CarController : MonoBehaviour
     void Start()
     {
         frustration = 0;
-        accel = 0;
+        targetSpeed = 0;
         state = CarState.NORMAL;
         wheelAngle = 0;
-        // ターゲット設定コードを一回呼んで、インスペクタで指定されたターゲットも
-        // ちゃんと計算
+        // ターゲット設定コードを一回呼んで、インスペクタで指定されたターゲットもちゃんと計算しておく
         SetTarget(target);
     }
 
@@ -111,10 +114,9 @@ public class CarController : MonoBehaviour
         targetPlane = new Plane( transform.forward,  target.transform.position );
     }
 
-    // 駐車場ゲートなど一定時間停止
+    // 駐車場ゲートなどで一定時間停止
     public void WaitAtGate(float t)
     {
-
+        state = CarState.WAITING;
     }
-
 }

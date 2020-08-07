@@ -33,4 +33,13 @@ public class WalkerManager : MonoBehaviour
     {
         target = t;
     }
+
+    void OnCollisionEnter(Collision c)
+    {
+        if (c.gameObject.CompareTag("car"))
+        {
+            Debug.Log("collision!!");
+            //gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        }
+    }
 }
