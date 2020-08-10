@@ -130,6 +130,7 @@ public class CarController : MonoBehaviour
         if( c.gameObject.CompareTag("walker") )
         {
             state = CarState.CRASHED;
+            // すぐに止めると実際っぽくないので、停止は Update 内で
         }
     }
 }
