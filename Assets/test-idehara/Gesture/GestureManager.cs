@@ -50,9 +50,9 @@ public class GestureManager : MonoBehaviour
             if( currentGesture != GestureType.STOP ) duration = 0;
             currentGesture = GestureType.STOP;
         }
-        else {
-            currentGesture = GestureType.NULL;
-        }
+        //else {
+        //    currentGesture = GestureType.NULL;
+        //}
 
 
         duration += Time.deltaTime;
