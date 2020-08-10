@@ -5,6 +5,7 @@ using Windows.Kinect;
 using System.Linq;
 using System.Collections.Specialized;
 using System;
+using System.Diagnostics;
 //using System.Diagnostics;
 
 public class GestureManager : MonoBehaviour
@@ -18,7 +19,9 @@ public class GestureManager : MonoBehaviour
     public StickRecognizer sr;
     Queue<Vector3> Rhand_Q;
     Queue<Vector3> Lhand_Q;
-
+    Queue<Vector3> Relbow_Q;
+    Queue<Vector3> Rshoulder_Q;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,8 @@ public class GestureManager : MonoBehaviour
         duration = 0;
         Rhand_Q = new Queue<Vector3>();
         Lhand_Q = new Queue<Vector3>();
+        Relbow_Q = new Queue<Vector3>();
+        Rshoulder_Q = new Queue<Vector3>();
     }
 
     // Update is called once per frame
@@ -63,7 +68,7 @@ public class GestureManager : MonoBehaviour
         //Kinectの処理
         if (_BodyManager == null)
         {
-            Debug.Log("_BodyManager == null");
+           // Debug.Log("_BodyManager == null");
             return;
         }
 
@@ -130,17 +135,36 @@ public class GestureManager : MonoBehaviour
             }
         }
 
+        // 停止のキュー
+        //Relbow_Q.Enqueue(Relbow.ToVector3());
+        //Rshoulder_Q.Enqueue(Rshoulder.ToVector3());
+        //if (Relbow_Q.Count > 60)
+        //{
+        //    Relbow_Q.Dequeue();
+        //}
+        //if (Rshoulder_Q.Count > 60)
+        //{
+        //    Rshoulder_Q.Dequeue();
+        //}
+        var Rshoulder_y = Rshoulder.ToVector3().y;
+        var Relbow_y = Relbow.ToVector3().y;
+        var Rhand_y = Rhand.ToVector3().y;
+
         //if(Rhand.ToVector3().y > 0.3)
-        if (max - min > 0.2)
-        {
-            currentGesture = GestureType.STOP;
-        }
-        //else
-        Debug.Log(max2 + " " + min2);
+        //Debug.Log(max2 + " " + min2);
         if (max2 - min2 > 0.3)
         {
             currentGesture = GestureType.GO;
         }
+        if (max - min > 0.2)
+        {
+            currentGesture = GestureType.SLOW;
+        }
+        else if (Relbow_y > 0.1 && Rshoulder_y > 0.1 && Rhand_y > 0.1)
+        {
+            currentGesture = GestureType.STOP;
+        }
+        UnityEngine.Debug.Log(Rshoulder_y + " " + Relbow_y + " " + Rhand_y);
     }
 }
 
