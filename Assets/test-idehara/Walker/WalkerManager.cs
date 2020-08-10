@@ -39,13 +39,15 @@ public class WalkerManager : MonoBehaviour
         target = t;
     }
 
-    void OnCollisionEnter(Collision c)
+    public void Crash(GameObject c, float speed)
     {
-        if (c.gameObject.CompareTag("car"))
-        {
-            Debug.Log("collision!!");
-            //gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            speed = 0;
-        }
+        speed = 0;
+        target = null;
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.None; // no constraints, it rotates on any axis.
+        Vector3 dir = gameObject.transform.position - c.transform.position;
+        rb.AddForce(dir.normalized * speed * speed * 100.0f);
     }
+
+
 }
