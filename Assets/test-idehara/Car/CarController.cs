@@ -129,7 +129,11 @@ public class CarController : MonoBehaviour
     {
         if( c.gameObject.CompareTag("walker") )
         {
+            Debug.Log("collision!!");
+
+            // すぐに止めると実際っぽくないので、停止は Update 内で
             state = CarState.CRASHED;
+            c.gameObject.GetComponent<WalkerManager>().Crash(gameObject, speed);
         }
     }
 }
