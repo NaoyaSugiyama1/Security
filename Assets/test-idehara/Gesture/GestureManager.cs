@@ -154,14 +154,17 @@ public class GestureManager : MonoBehaviour
         //Debug.Log(max2 + " " + min2);
         if (max2 - min2 > 0.3)
         {
+            if (currentGesture != GestureType.GO) duration = 0;
             currentGesture = GestureType.GO;
         }
         if (max - min > 0.2)
         {
+            if (currentGesture != GestureType.SLOW) duration = 0;
             currentGesture = GestureType.SLOW;
         }
         else if (Relbow_y > 0.1 && Rshoulder_y > 0.1 && Rhand_y > 0.1)
         {
+            if (currentGesture != GestureType.STOP) duration = 0;
             currentGesture = GestureType.STOP;
         }
         UnityEngine.Debug.Log(Rshoulder_y + " " + Relbow_y + " " + Rhand_y);
