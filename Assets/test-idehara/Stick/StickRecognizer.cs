@@ -44,28 +44,33 @@ public class StickRecognizer : MonoBehaviour
         s1 = Vector2.zero;
         s2 = Vector2.up;
 
-        return true;
+ 
 
-        /*
-        //横 press J
-        if (Input.GetKey(KeyCode.J))
+        //横 press Y
+        if (Input.GetKeyDown(KeyCode.Y))
         {
-            s1 = (50,100), s2 = (150, 100)
+            s1 = new Vector2(50, 100);
+            s2 = new Vector2(150, 100);
+            return true;
         }
-        //斜め press K
-        else if (Input.GetKey(KeyCode.K))
+        //斜め press H
+        else if (Input.GetKeyDown(KeyCode.H))
         {
-            s1 = (70,70), s2 = (140, 140)
+            s1 = new Vector2(70, 70);
+            s2 = new Vector2(140, 140);
+            return true;
         }
-        //縦 press L
-        else if (Input.GetKey(KeyCode.L))
+        //縦 press N
+        else if (Input.GetKeyDown(KeyCode.N))
         {
-            s1 = (100,50), s2 = (100, 150)
+            s1 = new Vector2(100, 50);
+            s2 = new Vector2(100, 150);
+            return true;
         }
         else
         {
             return false;
         }
-        */
+ 
     }
 }
