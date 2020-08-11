@@ -8,10 +8,14 @@ public class WalkerManager : MonoBehaviour
     public float speed;
     public GameObject target;
 
+    private bool isArrived;
+    private Vector3 move;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        isArrived = false;
+        move = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -19,10 +23,11 @@ public class WalkerManager : MonoBehaviour
     {
         if(target)
         {
-            Vector3 move = target.transform.position - gameObject.transform.position;
+            if( !isArrived )
+                move = target.transform.position - gameObject.transform.position;
             if( move.magnitude < ARRIVAL_DIST )
             {
-                speed = 0;
+                isArrived = true;
                 Destroy(gameObject, 0.5f);
             }
             gameObject.transform.position += move.normalized * Time.deltaTime * speed;
@@ -33,4 +38,16 @@ public class WalkerManager : MonoBehaviour
     {
         target = t;
     }
+
+    public void Crash(GameObject c, float speed)
+    {
+        speed = 0;
+        target = null;
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.None; // no constraints, it rotates on any axis.
+        Vector3 dir = gameObject.transform.position - c.transform.position;
+        rb.AddForce(dir.normalized * speed * speed * 100.0f);
+    }
+
+
 }
