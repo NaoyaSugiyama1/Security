@@ -6,6 +6,7 @@ TagManager:
   tags:
   - car
   - walker
+  - goal
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+//using System.Diagnostics;
 using UnityEngine;
 
 // 車ゲームオブジェクトのコライダ設定
@@ -134,6 +135,11 @@ public class CarController : MonoBehaviour
             // すぐに止めると実際っぽくないので、停止は Update 内で
             state = CarState.CRASHED;
             c.gameObject.GetComponent<WalkerManager>().Crash(gameObject, speed);
+        }
+        else if( c.gameObject.CompareTag("goal") )
+        {
+            Debug.Log("goal!!");
+            state = CarState.ARRIVED;
         }
     }
 }
