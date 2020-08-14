@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 using UnityEngine;
 
 public class GameLoop : MonoBehaviour
@@ -11,6 +11,7 @@ public class GameLoop : MonoBehaviour
     public int myscore;
 
     public GestureManager gm;
+    public bool isGoodEnd;
 
     // 最後にエスケープキーが押された時刻
     private DateTime lastEscape;
@@ -24,7 +25,7 @@ public class GameLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var statecount = 0;
+        
         // ESC の２連打で終了
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -60,8 +61,8 @@ public class GameLoop : MonoBehaviour
                     if( c.GetComponent<CarController>().state == CarController.CarState.CRASHED )
                     {
                         // どれか１台でも衝突したら BADEND に移行
+                        isGoodEnd = false;
                         NextState();
-                        statecount += 1;
                     }
                 }
 
@@ -77,8 +78,8 @@ public class GameLoop : MonoBehaviour
                 if( allArrived )
                 {
                     // 全車到着で GOODEND に移行
+                    isGoodEnd = true;
                     NextState();
-                    statecount += 2;
                 }
 
                 break;
@@ -114,13 +115,13 @@ public class GameLoop : MonoBehaviour
 
             case GameState.End:
                 Debug.Log("End");
-                if(statecount == 1)
-                {
-                    Debug.Log("Bad End");
-                }
-                else if(statecount == 2)
+                if(isGoodEnd == true)
                 {
                     Debug.Log("Good End");
+                }
+                else
+                {
+                    Debug.Log("Bad End");
                 }
                 break;
         }

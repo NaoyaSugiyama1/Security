@@ -167,7 +167,7 @@ public class GestureManager : MonoBehaviour
             if (currentGesture != GestureType.STOP) duration = 0;
             currentGesture = GestureType.STOP;
         }
-        UnityEngine.Debug.Log(Rshoulder_y + " " + Relbow_y + " " + Rhand_y);
+        //UnityEngine.Debug.Log(Rshoulder_y + " " + Relbow_y + " " + Rhand_y);
     }
 }
 
