@@ -67,11 +67,9 @@ public class CarController : MonoBehaviour
         // 回転後の向きで半分進む
         transform.position += transform.forward * speed * Time.deltaTime /2;
 
-        Debug.Log(targetPlane.GetDistanceToPoint(transform.position));
         // 曲がりはじめる条件。車体先端から 30% 先に目的地平面がやってきた
         if( !isTurning && Mathf.Abs(targetPlane.GetDistanceToPoint(transform.position)) < carLength * 1.1f)
         {
-            Debug.Log("start TURN");
             isTurning = true;
             wheelAngle = -40.0f;
         }
@@ -96,9 +94,7 @@ public class CarController : MonoBehaviour
         switch( state )
         {
             case CarState.ARRIVED:
-                // 目的地に到着したら、表示から消す
-                // gameObject 自体を消滅させると、state が参照できなくなる
-                gameObject.GetComponent<MeshRenderer>().enabled = false;
+
                 break;
             case CarState.CRASHED:
                 speed *= 0.9f;
@@ -146,10 +142,19 @@ public class CarController : MonoBehaviour
             state = CarState.CRASHED;
             c.gameObject.GetComponent<WalkerManager>().Crash(gameObject, speed);
         }
-        else if( c.gameObject.CompareTag("goal") )
+    }
+
+    public void OnTriggerEnter(Collider c)
+    {
+        if( c.CompareTag("goal") )
         {
             Debug.Log("goal!!");
             state = CarState.ARRIVED;
+            // 目的地に到着したら、ひとまず表示から消す
+            // foreach(var mr in gameObject.GetComponentsInChildren<MeshRenderer>())
+            //    mr.enabled = false;
+            // 「走っている車がいなくなったら勝ち」なので、消してしまってＯＫ
+            Destroy( gameObject, 0.5f );
         }
     }
 }
