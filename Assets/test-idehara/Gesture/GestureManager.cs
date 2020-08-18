@@ -18,19 +18,20 @@ public class GestureManager : MonoBehaviour
     public float duration;
     public StickRecognizer sr;
     Queue<Vector3> Rhand_Q;
-    Queue<Vector3> Lhand_Q;
     Queue<Vector3> Relbow_Q;
     Queue<Vector3> Rshoulder_Q;
-    
+    Queue<Vector3> Lhand_Q;
+    Queue<Vector3> Lelbow_Q;
     // Start is called before the first frame update
     void Start()
     {
         currentGesture = GestureType.NULL;
         duration = 0;
         Rhand_Q = new Queue<Vector3>();
-        Lhand_Q = new Queue<Vector3>();
         Relbow_Q = new Queue<Vector3>();
         Rshoulder_Q = new Queue<Vector3>();
+        Lhand_Q = new Queue<Vector3>();
+        Lelbow_Q = new Queue<Vector3>();
     }
 
     // Update is called once per frame
@@ -135,6 +136,26 @@ public class GestureManager : MonoBehaviour
             }
         }
 
+        Lelbow_Q.Enqueue(Lelbow.ToVector3());
+        if (Lelbow_Q.Count > 60)
+        {
+            Lelbow_Q.Dequeue();
+        }
+        float max3 = -999;
+        float min3 = 999;
+        foreach (Vector3 v4 in Lhand_Q)
+        {
+            var v5 = Math.Abs(v4.x);
+            if (max3 < v5)
+            {
+                max3 = v5;
+            }
+            if (min3 > v5)
+            {
+                min3 = v5;
+            }
+        }
+
         // 停止のキュー
         //Relbow_Q.Enqueue(Relbow.ToVector3());
         //Rshoulder_Q.Enqueue(Rshoulder.ToVector3());
@@ -152,17 +173,17 @@ public class GestureManager : MonoBehaviour
 
         //if(Rhand.ToVector3().y > 0.3)
         //Debug.Log(max2 + " " + min2);
-        if (max2 - min2 > 0.3)
-        {
-            if (currentGesture != GestureType.GO) duration = 0;
-            currentGesture = GestureType.GO;
-        }
         if (max - min > 0.2)
         {
             if (currentGesture != GestureType.SLOW) duration = 0;
             currentGesture = GestureType.SLOW;
         }
-        if (0.03 > Math.Abs(Relbow_y - Rhand_y))
+        if (max2 - min2 > 0.3 && max3 - min3 > 0.3 && 0.1 > Math.Abs(Relbow_y - Rhand_y))
+        {
+            if (currentGesture != GestureType.GO) duration = 0;
+            currentGesture = GestureType.GO;
+        }
+        else if (0.1 > Math.Abs(Relbow_y - Rhand_y))
         {
             if (currentGesture != GestureType.STOP) duration = 0;
             currentGesture = GestureType.STOP;
