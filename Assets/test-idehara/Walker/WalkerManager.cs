@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WalkerManager : MonoBehaviour
 {
-    static public float ARRIVAL_DIST = 0.5f;
+    static public float ARRIVAL_DIST = 2.0f;
     public float speed;
     public GameObject target;
 
