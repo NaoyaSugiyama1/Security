@@ -32,6 +32,7 @@ public class CarController : MonoBehaviour
     private float wheelAngle;
     private float addAngleFactor = 12.0f;
     private Plane targetPlane;
+    private bool isTurning;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class CarController : MonoBehaviour
         wheelAngle = 0;
         // ターゲット設定コードを一回呼んで、インスペクタで指定されたターゲットもちゃんと計算しておく
         SetTarget(target);
+        isTurning = false;
     }
 
     void FixedUpdate()
@@ -66,18 +68,24 @@ public class CarController : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime /2;
 
         // 曲がりはじめる条件。車体先端から 30% 先に目的地平面がやってきた
-        if( wheelAngle == 0 && Mathf.Abs(targetPlane.GetDistanceToPoint(transform.position)) < carLength * 1.3f)
-            wheelAngle = -45.0f;
+        if( !isTurning && Mathf.Abs(targetPlane.GetDistanceToPoint(transform.position)) < carLength * 1.1f)
+        {
+            isTurning = true;
+            wheelAngle = -40.0f;
+        }
 
         // 微調整
-        Vector3 cr = Vector3.Cross(transform.forward.normalized, dir.normalized);
-        float leftAngle = Vector3.Angle(dir, transform.forward);
-        // 目的地が３度以下に見えているならハンドルをどんどん戻す
-        if( Mathf.Abs(leftAngle) < 3 )
-            wheelAngle *= 0.55f;
-        // 目的地が４０度以下に見えているなら、ずれている角度に応じてハンドルを切り戻す
-        else if( Mathf.Abs(leftAngle) < 40 )
-            wheelAngle += cr.y * 0.8f;
+        if( isTurning )
+        {
+            Vector3 cr = Vector3.Cross(transform.forward.normalized, dir.normalized);
+            float leftAngle = Vector3.Angle(dir, transform.forward);
+            // 目的地が３度以下に見えているならハンドルをどんどん戻す
+            if( Mathf.Abs(leftAngle) < 3 )
+                wheelAngle *= 0.55f;
+            // 目的地が４０度以下に見えているなら、ずれている角度に応じてハンドルを切り戻す
+            else if( Mathf.Abs(leftAngle) < 40 )
+                wheelAngle += cr.y * 0.8f;
+        }
     }
 
     // Update is called once per frame
@@ -86,9 +94,7 @@ public class CarController : MonoBehaviour
         switch( state )
         {
             case CarState.ARRIVED:
-                // 目的地に到着したら、表示から消す
-                // gameObject 自体を消滅させると、state が参照できなくなる
-                gameObject.GetComponent<MeshRenderer>().enabled = false;
+
                 break;
             case CarState.CRASHED:
                 speed *= 0.9f;
@@ -117,7 +123,7 @@ public class CarController : MonoBehaviour
     public void SetTarget(GameObject t)
     {
         target = t;
-        targetPlane = new Plane( transform.forward,  target.transform.position );
+        targetPlane = new Plane( -transform.forward,  target.transform.position );
     }
 
     // 駐車場ゲートなどで一定時間停止
@@ -136,10 +142,19 @@ public class CarController : MonoBehaviour
             state = CarState.CRASHED;
             c.gameObject.GetComponent<WalkerManager>().Crash(gameObject, speed);
         }
-        else if( c.gameObject.CompareTag("goal") )
+    }
+
+    public void OnTriggerEnter(Collider c)
+    {
+        if( c.CompareTag("goal") )
         {
             Debug.Log("goal!!");
             state = CarState.ARRIVED;
+            // 目的地に到着したら、ひとまず表示から消す
+            // foreach(var mr in gameObject.GetComponentsInChildren<MeshRenderer>())
+            //    mr.enabled = false;
+            // 「走っている車がいなくなったら勝ち」なので、消してしまってＯＫ
+            Destroy( gameObject, 0.5f );
         }
     }
 }
