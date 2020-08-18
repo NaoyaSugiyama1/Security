@@ -75,7 +75,7 @@ public class CarController : MonoBehaviour
         }
 
         // 微調整
-        if( isTurning )
+        if( (state == CarState.NORMAL) && isTurning )
         {
             Vector3 cr = Vector3.Cross(transform.forward.normalized, dir.normalized);
             float leftAngle = Vector3.Angle(dir, transform.forward);
@@ -84,7 +84,7 @@ public class CarController : MonoBehaviour
                 wheelAngle *= 0.55f;
             // 目的地が４０度以下に見えているなら、ずれている角度に応じてハンドルを切り戻す
             else if( Mathf.Abs(leftAngle) < 40 )
-                wheelAngle += cr.y * 0.8f;
+                wheelAngle += cr.y * 0.8f * speed;
         }
     }
 
