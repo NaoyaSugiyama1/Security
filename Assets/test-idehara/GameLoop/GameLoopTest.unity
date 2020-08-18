@@ -321,19 +321,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4515838968354233132, guid: a261df68c8d2532058f20fdc3959fc24,
-        type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 1929182604}
     - target: {fileID: 4515838968354233133, guid: a261df68c8d2532058f20fdc3959fc24,
         type: 3}
       propertyPath: m_Name
-      value: car
-      objectReference: {fileID: 0}
-    - target: {fileID: 4515838968354233133, guid: a261df68c8d2532058f20fdc3959fc24,
-        type: 3}
-      propertyPath: m_TagString
       value: car
       objectReference: {fileID: 0}
     - target: {fileID: 4515838968354233135, guid: a261df68c8d2532058f20fdc3959fc24,
@@ -741,7 +731,7 @@ BoxCollider:
   m_GameObject: {fileID: 1339428007}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -878,6 +868,11 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1339428007}
+    - target: {fileID: 712458845154373807, guid: 7296ca03005333880a2f895078e8dad9,
+        type: 3}
+      propertyPath: minInterval
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7296ca03005333880a2f895078e8dad9, type: 3}
 --- !u!1 &1643780879
@@ -1000,7 +995,7 @@ BoxCollider:
   m_GameObject: {fileID: 1710313623}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1142,7 +1137,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907235003}
   m_LocalRotation: {x: -0, y: -0.99946225, z: -0, w: -0.032791026}
-  m_LocalPosition: {x: 0, y: 1, z: 9.19}
+  m_LocalPosition: {x: 0, y: 1.6, z: 9.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1313,5 +1308,15 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1710313623}
+    - target: {fileID: 712458845154373807, guid: 7296ca03005333880a2f895078e8dad9,
+        type: 3}
+      propertyPath: minInterval
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 712458845154373807, guid: 7296ca03005333880a2f895078e8dad9,
+        type: 3}
+      propertyPath: maxInterval
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7296ca03005333880a2f895078e8dad9, type: 3}
