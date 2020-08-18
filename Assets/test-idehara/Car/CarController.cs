@@ -32,6 +32,7 @@ public class CarController : MonoBehaviour
     private float wheelAngle;
     private float addAngleFactor = 12.0f;
     private Plane targetPlane;
+    private bool isTurning;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class CarController : MonoBehaviour
         wheelAngle = 0;
         // ターゲット設定コードを一回呼んで、インスペクタで指定されたターゲットもちゃんと計算しておく
         SetTarget(target);
+        isTurning = false;
     }
 
     void FixedUpdate()
@@ -65,19 +67,27 @@ public class CarController : MonoBehaviour
         // 回転後の向きで半分進む
         transform.position += transform.forward * speed * Time.deltaTime /2;
 
+        Debug.Log(targetPlane.GetDistanceToPoint(transform.position));
         // 曲がりはじめる条件。車体先端から 30% 先に目的地平面がやってきた
-        if( wheelAngle == 0 && Mathf.Abs(targetPlane.GetDistanceToPoint(transform.position)) < carLength * 1.3f)
-            wheelAngle = -45.0f;
+        if( !isTurning && Mathf.Abs(targetPlane.GetDistanceToPoint(transform.position)) < carLength * 1.1f)
+        {
+            Debug.Log("start TURN");
+            isTurning = true;
+            wheelAngle = -40.0f;
+        }
 
         // 微調整
-        Vector3 cr = Vector3.Cross(transform.forward.normalized, dir.normalized);
-        float leftAngle = Vector3.Angle(dir, transform.forward);
-        // 目的地が３度以下に見えているならハンドルをどんどん戻す
-        if( Mathf.Abs(leftAngle) < 3 )
-            wheelAngle *= 0.55f;
-        // 目的地が４０度以下に見えているなら、ずれている角度に応じてハンドルを切り戻す
-        else if( Mathf.Abs(leftAngle) < 40 )
-            wheelAngle += cr.y * 0.8f;
+        if( isTurning )
+        {
+            Vector3 cr = Vector3.Cross(transform.forward.normalized, dir.normalized);
+            float leftAngle = Vector3.Angle(dir, transform.forward);
+            // 目的地が３度以下に見えているならハンドルをどんどん戻す
+            if( Mathf.Abs(leftAngle) < 3 )
+                wheelAngle *= 0.55f;
+            // 目的地が４０度以下に見えているなら、ずれている角度に応じてハンドルを切り戻す
+            else if( Mathf.Abs(leftAngle) < 40 )
+                wheelAngle += cr.y * 0.8f;
+        }
     }
 
     // Update is called once per frame
@@ -117,7 +127,7 @@ public class CarController : MonoBehaviour
     public void SetTarget(GameObject t)
     {
         target = t;
-        targetPlane = new Plane( transform.forward,  target.transform.position );
+        targetPlane = new Plane( -transform.forward,  target.transform.position );
     }
 
     // 駐車場ゲートなどで一定時間停止
