@@ -37,6 +37,7 @@ public class WalkerManager : MonoBehaviour
     public void SetTarget(GameObject t)
     {
         target = t;
+        gameObject.transform.LookAt(t.transform.position, Vector3.up);
     }
 
     public void Crash(GameObject c, float speed)
@@ -49,5 +50,14 @@ public class WalkerManager : MonoBehaviour
         rb.AddForce(dir.normalized * speed * speed * 100.0f);
     }
 
+    public void OnCollisionEnter(Collision c)
+    {
+        Vector3 f = gameObject.transform.position - c.gameObject.transform.position;
+        f = f.normalized;
+        if( Vector3.Dot(f, gameObject.transform.forward) < 0 )
+        {
+            gameObject.GetComponent<Rigidbody>().AddForce(f * 5.0f);
+        }
+    }
 
 }
