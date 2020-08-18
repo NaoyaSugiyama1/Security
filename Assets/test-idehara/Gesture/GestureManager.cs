@@ -5,7 +5,7 @@ using Windows.Kinect;
 using System.Linq;
 using System.Collections.Specialized;
 using System;
-using System.Diagnostics;
+//using System.Diagnostics;
 //using System.Diagnostics;
 
 public class GestureManager : MonoBehaviour
@@ -162,12 +162,12 @@ public class GestureManager : MonoBehaviour
             if (currentGesture != GestureType.SLOW) duration = 0;
             currentGesture = GestureType.SLOW;
         }
-        else if (Relbow_y > 0.1 && Rshoulder_y > 0.1 && Rhand_y > 0.1)
+        if (0.03 > Math.Abs(Relbow_y - Rhand_y))
         {
             if (currentGesture != GestureType.STOP) duration = 0;
             currentGesture = GestureType.STOP;
         }
-        //UnityEngine.Debug.Log(Rshoulder_y + " " + Relbow_y + " " + Rhand_y);
+        Debug.Log(Rshoulder_y + " " + Relbow_y + " " + Rhand_y);
     }
 }
 
