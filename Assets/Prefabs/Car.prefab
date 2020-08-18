@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4515838968354233129}
   m_Layer: 0
   m_Name: Car
-  m_TagString: Untagged
+  m_TagString: car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   responseTime: 0
   speed: 5
   targetSpeed: 0
-  carLength: 2
+  carLength: 2.5
   state: 0
   target: {fileID: 0}
   previousCar: {fileID: 0}
